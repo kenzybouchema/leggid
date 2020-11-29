@@ -6,6 +6,7 @@ import com.kb.leggid.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
@@ -20,6 +21,8 @@ public class AuthService {
 
     private final UserRepository userRepository;
 
+    @Transactional
+    // Si au niveau de la classe toute les émthodes sont transactionnelles,// ici on préfère le niveau méthode
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
