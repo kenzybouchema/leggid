@@ -1,8 +1,11 @@
 package com.kb.leggid.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity// Indique à SPring que cette classe est une classe qui configure la sécurité de l'application web
 public class SecurityConfig extends WebSecurityConfigurerAdapter { // Fournit les bases de la configuration de la securité
@@ -22,5 +25,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // Fournit le
                 .authenticated();
 
         super.configure(http);
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
