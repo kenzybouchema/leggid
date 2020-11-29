@@ -1,5 +1,6 @@
 package com.kb.leggid.service;
 
+import com.kb.leggid.exceptions.SpringRedditException;
 import com.kb.leggid.model.NotificationEmail;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ class MailService {
             log.info("Activation email sent!!");
         } catch (MailException e) {
             log.error("Exception occurred when sending mail", e);
+            throw new SpringRedditException("Exception occurred when sending mail to " + notificationEmail.getRecipient(), e);
         }
     }
 
