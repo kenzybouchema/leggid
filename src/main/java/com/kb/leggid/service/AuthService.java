@@ -3,23 +3,22 @@ package com.kb.leggid.service;
 import com.kb.leggid.dto.RegisterRequest;
 import com.kb.leggid.model.User;
 import com.kb.leggid.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
 @Service
+@AllArgsConstructor // Lombok génère le constructeur avec tout les args
 public class AuthService {
 
-    // Note sur l'injéction par champs :
-    // Spring recommande l'injection par constructeur
+    // Injection par constructeur :
+    // Ici le contrsucteur est générer par Lombok !
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
