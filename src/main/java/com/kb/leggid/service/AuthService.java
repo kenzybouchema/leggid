@@ -1,6 +1,7 @@
 package com.kb.leggid.service;
 
 import com.kb.leggid.dto.RegisterRequest;
+import com.kb.leggid.exceptions.SpringRedditException;
 import com.kb.leggid.model.NotificationEmail;
 import com.kb.leggid.model.User;
 import com.kb.leggid.model.VerificationToken;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -68,5 +70,10 @@ public class AuthService {
         verificationToken.setUser(user);
         verificationTokenRepository.save(verificationToken);
         return token;
+    }
+
+    public void verifyAccount(String token) {
+        Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
+        verificationToken.orElseThrow(() -> new SpringRedditException("Invalid Token"));
     }
 }
