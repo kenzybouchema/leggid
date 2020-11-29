@@ -19,12 +19,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // Fournit le
         http.csrf().disable()
                 // On autorise toute les requeêtes qui matche le patten "/api/auth**" au tilisateurs autentifiés
                 .authorizeRequests()
-                .antMatchers("/api/auth**")
+                .antMatchers("/api/auth/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
-
-        super.configure(http);
     }
 
     @Bean
