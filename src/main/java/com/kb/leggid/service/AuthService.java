@@ -13,13 +13,13 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreated(Instant.now());
-        user.setEnabled(false); // Tant que l'utilisateur n'est pas 
+        user.setEnabled(false); // Tant que l'utilisateur n'est pas validé par mail
     }
 }
