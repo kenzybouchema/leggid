@@ -13,7 +13,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // Fournit le
         // Les apis REST étant stateless ( cela signifie que chaque requêtes est isolé des autres, toute les informations
         // sont contenues dans la requêtes en cours et ne dépendent pas des requêtes précedentes , ou d'informations dans
         // les cookies )
-        http.csrf().disable();
+        http.csrf().disable()
+                // On autorise toute les requeêtes qui matche le patten "/api/auth**" au tilisateurs autentifiés
+                .authorizeRequests()
+                .antMatchers("/api/auth**")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
 
         super.configure(http);
     }
