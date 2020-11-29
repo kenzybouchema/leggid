@@ -1,6 +1,7 @@
 package com.kb.leggid.service;
 
 import com.kb.leggid.dto.RegisterRequest;
+import com.kb.leggid.model.NotificationEmail;
 import com.kb.leggid.model.User;
 import com.kb.leggid.model.VerificationToken;
 import com.kb.leggid.repository.UserRepository;
@@ -26,6 +27,8 @@ public class AuthService {
 
     private final VerificationTokenRepository verificationTokenRepository;
 
+    private final MailService mailService;
+
     @Transactional
     // Si au niveau de la classe toute les émthodes sont transactionnelles,// ici on préfère le niveau méthode
     public void signup(RegisterRequest registerRequest) {
@@ -39,6 +42,17 @@ public class AuthService {
 
         String token = generateVerificationToken(user);
 
+        mailService.sendMail(new NotificationEmail(
+                "Please Activate your Account",
+                user.getEmail(),
+                // Dans le corps du message on a le lien vers l'application avec le token que l'on vient d'envoyer.
+                // L'utilisateur en cliquant dessus va appeler la méthode mappé
+                // sur "/accountVerification/" dans le lecontroller mappé sur "/api/auth/"
+                // avec comme variable dans la requete le token, afin de verifier l"existance en base d'un couple
+                // user/token !
+                "Thank you for signing up to Spring Reddit, " +
+                "please click on the below url to activate your account : " +
+                "http://localhost:8080/api/auth/accountVerification/" + token));
     }
 
     /**
