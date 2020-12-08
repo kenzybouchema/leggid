@@ -1,6 +1,7 @@
 package com.kb.leggid.security;
 
 import com.kb.leggid.exceptions.SpringRedditException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -66,5 +67,16 @@ public class JwtProvider {
             throw new SpringRedditException("Exception occured while " +
                     "retrieving public key from keystore", e);
         }
+    }
+
+    public String getUsernameFromJwt(String token){
+        // Lire la claim depuis le token ( la claim est le body du token )
+        Claims claims = Jwts.parserBuilder()
+                .requireAudience("string")
+                .setSigningKey(getPublickey())
+                .build().parseClaimsJws(token)
+                .getBody();
+        // Enfin dans la claim l'utilisateur est le sujet ( subject)
+        return claims.getSubject();
     }
 }
