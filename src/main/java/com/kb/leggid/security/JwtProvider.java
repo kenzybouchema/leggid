@@ -46,4 +46,25 @@ public class JwtProvider {
             throw new SpringRedditException("Exception occured while retrieving public key from keystore", e);
         }
     }
+
+    public boolean validateToken(String jwt) {
+        // Deprecated:
+        // parser().setSigningKey(getPublickey()).parseClaimsJws(jwt);
+        Jwts.parserBuilder()
+                .requireAudience("string")
+                .setSigningKey(getPublickey())
+                .build().
+                parseClaimsJws(jwt);
+        // Si la clé est bien parsé alors le token est validé
+        return true;
+    }
+
+    private PublicKey getPublickey() {
+        try {
+            return keyStore.getCertificate("springblog").getPublicKey();
+        } catch (KeyStoreException e) {
+            throw new SpringRedditException("Exception occured while " +
+                    "retrieving public key from keystore", e);
+        }
+    }
 }
