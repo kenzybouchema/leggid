@@ -1,5 +1,7 @@
 package com.kb.leggid.service;
 
+import com.kb.leggid.dto.AuthenticationResponse;
+import com.kb.leggid.dto.LoginRequest;
 import com.kb.leggid.dto.RegisterRequest;
 import com.kb.leggid.exceptions.SpringRedditException;
 import com.kb.leggid.model.NotificationEmail;
@@ -7,7 +9,12 @@ import com.kb.leggid.model.User;
 import com.kb.leggid.model.VerificationToken;
 import com.kb.leggid.repository.UserRepository;
 import com.kb.leggid.repository.VerificationTokenRepository;
+import com.kb.leggid.security.JwtProvider;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +37,10 @@ public class AuthService {
     private final VerificationTokenRepository verificationTokenRepository;
 
     private final MailService mailService;
+
+    private final AuthenticationManager authenticationManager; // Une interface, il faut un bean !
+
+    private final JwtProvider jwtProvider;
 
     @Transactional
     // Si au niveau de la classe toute les émthodes sont transactionnelles,// ici on préfère le niveau méthode
@@ -84,5 +95,24 @@ public class AuthService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new SpringRedditException("User not found with name - " + username));
         user.setEnabled(true);
         userRepository.save(user);
+    }
+
+    public AuthenticationResponse login(LoginRequest loginRequest) {
+        Authentication authenticate = authenticationManager.authenticate(
+                // Construit à partir du DTO l'authentification
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
+        );
+        // Dans le context du fil d'execution
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        // Fournit un token pour l'utilisateur authentifié dans "authenticate"
+        String token = jwtProvider.generateToken(authenticate);
+        // Retoune le token avec l'utilisateur
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .username(loginRequest.getUsername())
+                .build();
     }
 }
