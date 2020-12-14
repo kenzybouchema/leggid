@@ -1,5 +1,6 @@
 package com.kb.leggid.config;
 
+import com.kb.leggid.security.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,12 +13,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity// Indique à SPring que cette classe est une classe qui configure la sécurité de l'application web
 @AllArgsConstructor // Pour l'injection par contructeur ( ex: le UserDetailService )
 public class SecurityConfig extends WebSecurityConfigurerAdapter { // Fournit les bases de la configuration de la securité
 
     private final UserDetailsService userDetailsService; // Implique l'ajout d'une implémentation dans le package Service
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -32,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // Fournit le
                 .permitAll()
                 .anyRequest()
                 .authenticated();
+        // Ajout d'un filtre de la requete HTTP
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
