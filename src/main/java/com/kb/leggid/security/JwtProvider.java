@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.security.*;
 import java.security.cert.CertificateException;
 
+import static io.jsonwebtoken.Jwts.parser;
+
 @Service
 public class JwtProvider {
 
@@ -52,10 +54,9 @@ public class JwtProvider {
         // Deprecated:
         // parser().setSigningKey(getPublickey()).parseClaimsJws(jwt);
         Jwts.parserBuilder()
-                .requireAudience("string")
                 .setSigningKey(getPublickey())
-                .build().
-                parseClaimsJws(jwt);
+                .build()
+                .parseClaimsJws(jwt);
         // Si la clé est bien parsé alors le token est validé
         return true;
     }
@@ -72,7 +73,7 @@ public class JwtProvider {
     public String getUsernameFromJwt(String token){
         // Lire la claim depuis le token ( la claim est le body du token )
         Claims claims = Jwts.parserBuilder()
-                .requireAudience("string")
+                //.requireAudience("string")
                 .setSigningKey(getPublickey())
                 .build().parseClaimsJws(token)
                 .getBody();

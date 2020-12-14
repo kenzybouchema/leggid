@@ -29,7 +29,6 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
         // On lit le le token depuis la requête
         String jwtFromRequest = getJwtFromRequest(request);
         // On valide le token
-        jwtProvider.validateToken(jwtFromRequest);
         // Si un token est bien renseignée ( non nullité, chaine de longueur supérieur à 0 et au moins un caractère de texte
         // Et le Token est valide (création d'un parser avec la clé public, puis on parse le token si pas d'anomalie alors le token est valie)
         if(StringUtils.hasText(jwtFromRequest) && jwtProvider.validateToken(jwtFromRequest)){
