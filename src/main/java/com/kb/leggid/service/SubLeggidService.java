@@ -25,20 +25,20 @@ public class SubLeggidService {
 
     @Transactional
     public SubLeggidDto save(SubLeggidDto subLeggidDto) {
-        SubLeggid save = SubleggidRepository.save(subLeggidMapper.mapDtoToSubreddit(subLeggidDto));
+        SubLeggid save = SubleggidRepository.save(subLeggidMapper.mapDtoToSubLeggid(subLeggidDto));
         subLeggidDto.setId(save.getId());
         return subLeggidDto;
     }
 
     @Transactional(readOnly = true)
     public List<SubLeggidDto> getAll() {
-        return SubleggidRepository.findAll().stream().map(subLeggidMapper::mapSubredditToDto).collect(toList());
+        return SubleggidRepository.findAll().stream().map(subLeggidMapper::mapSubLeggidToDto).collect(toList());
     }
 
     @Transactional(readOnly = true)
      public SubLeggidDto getSubleggid(Long id) {
          SubLeggid subLeggid = SubleggidRepository.findById(id)
                  .orElseThrow(() -> new SpringRedditException("No Subleggid found with ID - " + id));
-         return subLeggidMapper.mapSubredditToDto(subLeggid);
+         return subLeggidMapper.mapSubLeggidToDto(subLeggid);
      }
 }

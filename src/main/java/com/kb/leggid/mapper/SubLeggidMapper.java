@@ -16,8 +16,8 @@ public interface SubLeggidMapper {
     // Ici  le mamping n'est pas direct on a une liste d'une part et dans le dto un entier
     // MapStruct permet de définir une méthode à appeler pour implémenter la logique dans l'attribut "expression"
     // Le reste des champs sont implicitement reconnu
-    @Mapping(target = "numberOfPosts", expression = "java(mapPosts(subreddit.getPosts()))")
-    SubLeggidDto mapSubredditToDto(SubLeggid subreddit);
+    @Mapping(target = "numberOfPosts", expression = "java(mapPosts(subLeggid.getPosts()))")
+    SubLeggidDto mapSubLeggidToDto(SubLeggid subLeggid);
 
     default Integer mapPosts(List<Post> numberOfPosts) {
         return numberOfPosts.size();
@@ -26,5 +26,5 @@ public interface SubLeggidMapper {
     // Indique que c'est le mapping inverse du mapping existant
     @InheritInverseConfiguration
     @Mapping(target = "posts", ignore = true)
-    SubLeggid mapDtoToSubreddit(SubLeggidDto subreddit);
+    SubLeggid mapDtoToSubLeggid(SubLeggidDto subLeggid);
 }

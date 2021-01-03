@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface SubLeggidRepository  extends JpaRepository<SubLeggid, Long> {
-    Optional<SubLeggid> findByName(String subredditName);
+    Optional<SubLeggid> findByName(String subLeggidName);
 }
