@@ -20,9 +20,8 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@RequestBody PostRequest postRequest) {
-        postService.save(postRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest postRequest) {
+        return status(HttpStatus.CREATED).body(postService.save(postRequest));
     }
 
     @GetMapping

@@ -49,10 +49,11 @@ public class PostService {
     }
 
     @Transactional
-    public void save(PostRequest postRequest) {
+    public PostResponse save(PostRequest postRequest) {
         SubLeggid subLeggid = subLeggidRepository.findByName(postRequest.getSubLeggidName())
                 .orElseThrow(() -> new SubLeggidNotFoundException(postRequest.getSubLeggidName()));
-        postRepository.save(postMapper.map(postRequest, subLeggid, authService.getCurrentUser()));
+        Post createdPost =  postRepository.save(postMapper.map(postRequest, subLeggid, authService.getCurrentUser()));
+        return postMapper.mapToDto(createdPost);
     }
 
     @Transactional(readOnly = true)
