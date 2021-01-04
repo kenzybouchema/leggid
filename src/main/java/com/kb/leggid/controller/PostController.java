@@ -35,12 +35,12 @@ public class PostController {
     }
 
     @GetMapping("/by-subLeggid/{id}")
-    public ResponseEntity<List<PostResponse>> getPostsBySubLeggid(Long id) {
+    public ResponseEntity<List<PostResponse>> getPostsBySubLeggid(@PathVariable Long id) {
         return status(HttpStatus.OK).body(postService.getPostsBysubLeggid(id));
     }
 
     @GetMapping("/by-user/{name}")
-    public ResponseEntity<List<PostResponse>> getPostsByUsername(String username) {
-        return status(HttpStatus.OK).body(postService.getPostsByUsername(username));
+    public ResponseEntity<List<PostResponse>> getPostsByUsername(@PathVariable String name) {
+        return status(HttpStatus.OK).body(postService.getPostsByUsername(name));
     }
 }

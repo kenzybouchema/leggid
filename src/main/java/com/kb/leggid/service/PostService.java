@@ -4,6 +4,7 @@ import com.kb.leggid.dto.PostRequest;
 import com.kb.leggid.dto.PostResponse;
 import com.kb.leggid.exceptions.PostNotFoundException;
 import com.kb.leggid.exceptions.SubLeggidNotFoundException;
+import com.kb.leggid.exceptions.UserNameNotFoundException;
 import com.kb.leggid.mapper.PostMapper;
 import com.kb.leggid.model.Post;
 import com.kb.leggid.model.SubLeggid;
@@ -67,7 +68,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<PostResponse> getPostsByUsername(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+                .orElseThrow(() -> new UserNameNotFoundException(username));
         return postRepository.findByUser(user)
                 .stream()
                 .map(postMapper::mapToDto)
