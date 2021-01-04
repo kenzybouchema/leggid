@@ -52,7 +52,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreated(Instant.now());
         user.setEnabled(false);// Tant que l'utilisateur n'est pas validé par m
-        userRepository.save(user);
+        userRepository.save(user); //TODO: emmpêcher la création de doublon
 
         String token = generateVerificationToken(user);
 
