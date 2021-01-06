@@ -2,6 +2,7 @@ package com.kb.leggid.mapper;
 import com.kb.leggid.dto.SubLeggidDto;
 import com.kb.leggid.model.Post;
 import com.kb.leggid.model.SubLeggid;
+import com.kb.leggid.model.User;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -26,5 +27,5 @@ public interface SubLeggidMapper {
     // Indique que c'est le mapping inverse du mapping existant
     @InheritInverseConfiguration
     @Mapping(target = "posts", ignore = true)
-    SubLeggid mapDtoToSubLeggid(SubLeggidDto subLeggid);
+    SubLeggid mapDtoToSubLeggid(SubLeggidDto subLeggid, User user);
 }

@@ -20,12 +20,12 @@ import static java.util.stream.Collectors.toList;
 public class SubLeggidService {
 
     private final SubLeggidRepository SubleggidRepository;
-
+    private final AuthService authService;
     private final SubLeggidMapper subLeggidMapper;
 
     @Transactional
     public SubLeggidDto save(SubLeggidDto subLeggidDto) {
-        SubLeggid save = SubleggidRepository.save(subLeggidMapper.mapDtoToSubLeggid(subLeggidDto));
+        SubLeggid save = SubleggidRepository.save(subLeggidMapper.mapDtoToSubLeggid(subLeggidDto, authService.getCurrentUser()));
         subLeggidDto.setId(save.getId());
         return subLeggidDto;
     }

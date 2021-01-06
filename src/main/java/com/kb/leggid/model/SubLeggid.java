@@ -27,8 +27,10 @@ public class SubLeggid {
     @NotBlank(message = "Description is required")
     private String description;
     @OneToMany(fetch = LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private List<Post> posts;
     private Instant createdDate;
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 }
