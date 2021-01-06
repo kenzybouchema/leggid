@@ -34,6 +34,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // Fournit le
                 .authorizeRequests()
                 .antMatchers("/api/auth/**")
                 .permitAll()
+                // Exclu ces Urls de la contrainte d'authentifications
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated();
         // Ajout d'un filtre de la requete HTTP
