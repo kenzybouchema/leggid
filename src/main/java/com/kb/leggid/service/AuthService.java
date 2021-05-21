@@ -34,7 +34,7 @@ import static java.util.Date.from;
 public class AuthService {
 
     // Injection par constructeur :
-    // Ici le contrsucteur est générer par Lombok !
+    // Ici le constructeur est générer par Lombok !
 
     private final PasswordEncoder passwordEncoder;
 
@@ -50,8 +50,10 @@ public class AuthService {
 
     private final RefreshTokenService refreshTokenService;
 
+    private final MailContentBuilder mailContentBuilder;
+
     @Transactional
-    // Si au niveau de la classe toute les émthodes sont transactionnelles,// ici on préfère le niveau méthode
+    // Si au niveau de la classe toute les méthodes sont transactionnelles,// ici on préfère le niveau méthode
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
@@ -68,12 +70,12 @@ public class AuthService {
                 user.getEmail(),
                 // Dans le corps du message on a le lien vers l'application avec le token que l'on vient d'envoyer.
                 // L'utilisateur en cliquant dessus va appeler la méthode mappé
-                // sur "/accountVerification/" dans le lecontroller mappé sur "/api/auth/"
-                // avec comme variable dans la requete le token, afin de verifier l"existance en base d'un couple
+                // sur "/accountVerification/" dans le le controller mappé sur "/api/auth/"
+                // avec comme variable dans la requête le token, afin de verifier l"existence en base d'un couple
                 // user/token !
-                "Thank you for signing up to Spring Reddit, " +
+                mailContentBuilder.build("Thank you for signing up to Spring Reddit, " +
                 "please click on the below url to activate your account : " +
-                "http://localhost:8080/api/auth/accountVerification/" + token));
+                "http://localhost:8080/api/auth/accountVerification/" + token)));
     }
 
     /**
@@ -98,7 +100,7 @@ public class AuthService {
     }
 
     @Transactional
-    private void fetchUserAndEnable(VerificationToken verificationToken) {
+    void fetchUserAndEnable(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new SpringRedditException("User not found with name - " + username));
         user.setEnabled(true);
