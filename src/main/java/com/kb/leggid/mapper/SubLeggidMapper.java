@@ -27,5 +27,6 @@ public interface SubLeggidMapper {
     // Indique que c'est le mapping inverse du mapping existant
     @InheritInverseConfiguration
     @Mapping(target = "posts", ignore = true)
+    @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
     SubLeggid mapDtoToSubLeggid(SubLeggidDto subLeggid, User user);
 }
